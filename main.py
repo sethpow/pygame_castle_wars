@@ -5,7 +5,6 @@ win = pygame.display.set_mode((1500, 900))
 
 pygame.display.set_caption("Castle Wars")
 
-# This goes outside the while loop, near the top of the program
 walkRight = [pygame.image.load('R1.png'), pygame.image.load('R2.png'), pygame.image.load('R3.png'), pygame.image.load('R4.png'), pygame.image.load('R5.png'), pygame.image.load('R6.png'), pygame.image.load('R7.png'), pygame.image.load('R8.png'), pygame.image.load('R9.png')]
 walkLeft = [pygame.image.load('L1.png'), pygame.image.load('L2.png'), pygame.image.load('L3.png'), pygame.image.load('L4.png'), pygame.image.load('L5.png'), pygame.image.load('L6.png'), pygame.image.load('L7.png'), pygame.image.load('L8.png'), pygame.image.load('L9.png')]
 bg = pygame.image.load('bg.jpg')
@@ -13,10 +12,10 @@ char = pygame.image.load('standing.png')
 
 clock = pygame.time.Clock()
 
-#bulletSound = pygame.mixer.Sound('shoot.wav')
-#hitSound = pygame.mixer.Sound('grunt.wav')
-#bulletSound.play()
-#hitSound.play()
+# bulletSound = pygame.mixer.Sound('shoot.wav')
+# hitSound = pygame.mixer.Sound('grunt.wav')
+# bulletSound.play()
+# hitSound.play()
 
 music = pygame.mixer.music.load('music.mp3')
 pygame.mixer.music.play(-1)
@@ -54,14 +53,13 @@ class player(object):
                     win.blit(walkRight[0], (self.x, self.y))
             else:
                     win.blit(walkLeft[0], (self.x, self.y))
-        self.hitbox = (self.x + 17, self.y + 11, 29, 52) #pasting this here from line 29 makes the hitbox follow char. If it wasnt here, the box would stay at spawn
-        #pygame.draw.rect(win, (150,0,0), self.hitbox,2) #char hitbox and color      REMOVE POUND TO MAKE CHAR HITBOX APPEAR
+        self.hitbox = (self.x + 17, self.y + 11, 29, 52) # (from line 29) makes the hitbox follow char. If it wasnt here, the box would stay at spawn
+        # pygame.draw.rect(win, (150,0,0), self.hitbox,2) # char hitbox and color
 
-#this makes char face the way he was moving, rather than looking forward once you stop moving side to side. 0 stays on first image
-#indent the else, if and else 1 each to make char dissappear when not moving (good idea for enemies to stealth)
+# this makes char face the way he was moving, rather than looking forward once you stop moving side to side. 0 stays on first image
 
 
-#this is for the bullet animation. Facing is telling which direction the bullet is travelling
+# this is for the bullet animation. Facing is telling which direction the bullet is travelling
 class projectile(object):
     def __init__(self,x,y,radius,color,facing):
         self.x = x
@@ -71,7 +69,7 @@ class projectile(object):
         self.facing = facing
         self.vel = 10 * facing
     
-    #shape of the projectile
+    # shape of the projectile
     def draw(self,win):
         pygame.draw.circle(win, self.color, (self.x, self.y,), self.radius)
 
@@ -88,7 +86,7 @@ class enemy(object):
         self.end = end
         self.path = [self.x, self.end]
         self.walkCount = 0
-        self.vel = 5.75 #enemy speed
+        self.vel = 5.75 # enemy speed
         self.hitbox = (self.x + 17, self.y + 2, 31, 57)
         self.health = 9
         self.visible = True
@@ -109,7 +107,7 @@ class enemy(object):
             pygame.draw.rect(win, (185,30,30), (self.hitbox[0], self.hitbox[1] -20, 33.75, 10))
             pygame.draw.rect(win, (50, 145, 90), (self.hitbox[0], self.hitbox[1] -20, 40 - (3.75 * (10 - self.health)), 10)) #from 40/10 on, makes red appear when hit
             self.hitbox = (self.x + 17, self.y + 2, 31, 57)
-            #pygame.draw.rect(win, (250,0,0), self.hitbox,2)      #remove the pound to make enemy hitbox appear
+            # pygame.draw.rect(win, (250,0,0), self.hitbox,2)      # remove to make enemy hitbox appear
     
     def move(self):
         if self.vel > 0:
@@ -134,22 +132,22 @@ class enemy(object):
 
 
 def redrawGameWindow():
-    win.blit(bg, (0,0)) #this blocks the square from leaving a trail
+    win.blit(bg, (0,0)) # this blocks the square from leaving a trail
     text = font.render('Player Score: ' + str(score), 1, (185,30,30))
-    win.blit(text, (1215, 30)) #this draws the score text
+    win.blit(text, (1215, 30)) # this draws the score text
     man.draw(win)
     goblin.draw(win)
     for bullet in bullets:
         bullet.draw(win)   
     pygame.display.update()
 
-#all pygames have main loop, for ex. collision, mouse events, hit stuff
+# all pygames have main loop, for ex. collision, mouse events, hit stuff
 
-#mainloop
-font = pygame.font.SysFont('comicsans', 50) #font type, size, and bold
-man = player(1245, 815, 64, 64) #char spawn point and size
-goblin = enemy(200, 821, 64, 64, 1450) #enemy spawn and 1450 is where he turns back
-bulletSpace = 0 #adding distance between bullets
+# mainloop
+font = pygame.font.SysFont('comicsans', 50) # font type, size, and bold
+man = player(1245, 815, 64, 64) # char spawn point and size
+goblin = enemy(200, 821, 64, 64, 1450) # enemy spawn and 1450 is where he turns back
+bulletSpace = 0 # adding distance between bullets
 bullets = []
 run = True
 while run:
@@ -167,30 +165,29 @@ while run:
     for bullet in bullets:
         if bullet.y - bullet.radius < goblin.hitbox[1] + goblin.hitbox[3] and bullet.y + bullet.radius > goblin.hitbox[1]: #checking to see if we are above bottom of rectangle, and checks if below top of rec
             if bullet.x + bullet.radius > goblin.hitbox[0] and bullet.x - bullet.radius < goblin.hitbox[0] + goblin.hitbox[2]:
-                #hitSound.play()
-                goblin.hit() #this generates lines 112 and 113 to print
+                # hitSound.play()
+                goblin.hit()
                 score +=1
-                bullets.pop(bullets.index(bullet)) #makes bullet dissappear on impact w/ goblin
+                bullets.pop(bullets.index(bullet)) # makes bullet dissappear on impact w/ goblin
 
         if bullet.x < 1500 and bullet.x > 0:
             bullet.x += bullet.vel
         else:
             bullets.pop(bullets.index(bullet))
-            #makes the bullet dissappear
+            # makes the bullet dissappear
 
 
-#movement and barriers
+# movement and barriers
     keys = pygame.key.get_pressed()
 
     if keys[pygame.K_SPACE] and bulletSpace == 0:
-        #bulletSound.play()
+        # bulletSound.play()
         if man.left:
             facing = -1
         else:
             facing = 1
-        if len(bullets) < 3: #number of bullets our char can throw
+        if len(bullets) < 3: # number of bullets our char can throw
             bullets.append(projectile(round(man.x + man.width //2), round(man.y + man.height //2), 6, (185,30,30), facing)) #bullet color
-            #append means adding to end once the prev bullets dissappear
         bulletSpace = 1
 
     if keys[pygame.K_LEFT] and man.x > man.vel:
