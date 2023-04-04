@@ -1,1 +1,1 @@
-# pygame_castle_wars
+Game made in pygame; working on getting it working in browser
